@@ -11,24 +11,30 @@ import {
   verifyOtp,
   resendOtp,
   forgotPassword,
-  resetPassword
+  resetPassword,
+  
 } from "../controllers/user.controller.js";
+
+
+import { simpleAuth } from "../middleware/simpleAuth.js";
 
 const router = express.Router();
 
-router.get("/", getUsers);
-router.get("/user/:id", getUserById);
+router.get("/", simpleAuth, getUsers);
+router.get("/user/:id", simpleAuth, getUserById);
 
 
-
-
+router.post("/signup", signup);
+router.post("/login", login);
+router.post("/verify-otp", verifyOtp);
+router.post("/resend-otp", resendOtp);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
 
-router.put("/", updateUser);
+router.put("/", simpleAuth, updateUser);
 router.put("/user/:id", updateUserById);
 
-router.delete("/", deleteUser);
+router.delete("/", simpleAuth, deleteUser);
 router.delete("/user/:id", deleteUserById);
 
 export default router;

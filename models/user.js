@@ -28,6 +28,7 @@ const userSchema = new mongoose.Schema(
     resetTokenExpiry: {
       type: Date,
     },
+
   },
   { timestamps: true }
 );

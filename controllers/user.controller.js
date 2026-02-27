@@ -5,11 +5,11 @@ import bcrypt from "bcrypt";
 
 const app = express();
 
-function middleware(req, res, next) {
-  console.log("Middleware working ");
-  next();
-}
-app.use(middleware);
+// function middleware(req, res, next) {
+//   console.log("Middleware working ");
+//   next();
+// }
+// app.use(middleware);
 
 // Signup 
 export const signup = async (req, res) => {
@@ -276,4 +276,4 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-export default { middleware };
+// export default { middleware };
