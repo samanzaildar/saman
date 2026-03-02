@@ -5,11 +5,6 @@ import bcrypt from "bcrypt";
 
 const app = express();
 
-// function middleware(req, res, next) {
-//   console.log("Middleware working ");
-//   next();
-// }
-// app.use(middleware);
 
 // Signup 
 export const signup = async (req, res) => {
@@ -247,7 +242,7 @@ export const forgotPassword = async (req, res) => {
     }
     const resetToken = Math.random().toString(36).substr(2, 8);
     user.resetToken = resetToken;
-    user.resetTokenExpiry = Date.now() + 1000 * 60 * 15; // 15 minutes expiry
+    // user.resetTokenExpiry = Date.now() + 1000 * 60 * 15; 
     await user.save();
     res.json({ message: "Reset token sent to email", resetToken });
   } catch (error) {
@@ -276,4 +271,19 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-// export default { middleware };
+// upload image 
+export const uploadProfileImage = (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
+
+    res.status(200).json({
+      message: "File uploaded successfully",
+      file: req.file.filename,
+      path: req.file.path,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
