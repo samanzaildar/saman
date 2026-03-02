@@ -18,7 +18,11 @@ import {
 
 import { simpleAuth } from "../middleware/simpleAuth.js";
 
+
+
 const router = express.Router();
+
+
 
 router.get("/", simpleAuth, getUsers);
 router.get("/user/:id", simpleAuth, getUserById);
