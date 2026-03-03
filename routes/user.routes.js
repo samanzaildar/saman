@@ -17,7 +17,7 @@ router.post("/verify-otp", verifyOtp);
 router.post("/resend-otp", resendOtp);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password", resetPassword);
-router.post("/upload-profile-image",upload.single("avatar"),uploadProfileImage);
+router.post("/upload-profile-image", upload.array("avatars", 10), uploadProfileImage);
 
 router.put("/", simpleAuth, updateUser);
 router.put("/user/:id", updateUserById);

@@ -156,7 +156,6 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-
 // Get user by ID
 export const getUserById = async (req, res) => {
   const { id } = req.params;
@@ -242,7 +241,7 @@ export const forgotPassword = async (req, res) => {
     }
     const resetToken = Math.random().toString(36).substr(2, 8);
     user.resetToken = resetToken;
-    // user.resetTokenExpiry = Date.now() + 1000 * 60 * 15; 
+    user.resetTokenExpiry = Date.now() + 1000 * 60 * 15;
     await user.save();
     res.json({ message: "Reset token sent to email", resetToken });
   } catch (error) {
@@ -271,17 +270,21 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-// upload image 
+// upload multiple images
 export const uploadProfileImage = (req, res) => {
   try {
-    if (!req.file) {
-      return res.status(400).json({ message: "No file uploaded" });
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "No files uploaded" });
     }
 
+    const files = req.files.map(file => ({
+      filename: file.filename,
+      path: file.path
+    }));
+
     res.status(200).json({
-      message: "File uploaded successfully",
-      file: req.file.filename,
-      path: req.file.path,
+      message: "Files uploaded successfully",
+      files
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
