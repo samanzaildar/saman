@@ -10,7 +10,6 @@ const router = express.Router();
 router.get("/", simpleAuth, getUsers);
 router.get("/user/:id", simpleAuth, getUserById);
 
-
 router.post("/signup", signup);
 router.post("/login", login);
 router.post("/verify-otp", verifyOtp);

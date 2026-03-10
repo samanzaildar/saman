@@ -23,7 +23,7 @@ export const signup = async (req, res) => {
     const user = await User.create({ name, email, password: hashedPassword, otp, emailVerified: false });
     res.status(201).json({ message: "Signup successful, OTP sent to email", userId: user._id });
   } catch (error) {
-    res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ error: "Server error" });
   }
 };
 
@@ -56,6 +56,7 @@ export const login = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
 // Verify OTP 
 export const verifyOtp = async (req, res) => {
   const { userId, otp } = req.body;
@@ -99,6 +100,25 @@ export const resendOtp = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+// Create user
+export const createUser = async (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: "Name, email, and password required" });
+  }
+  try {
+    const existing = await User.findOne({ email });
+    if (existing) {
+      return res.status(400).json({ error: "User already exists" });
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ name, email, password: hashedPassword, emailVerified: true });
+    res.status(201).json({ message: "User created successfully", user });
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+};
+
 // Get all users
 export const getUsers = async (req, res) => {
   try {
@@ -108,7 +128,6 @@ export const getUsers = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
-
 
 // Update user
 export const updateUser = async (req, res) => {
@@ -173,8 +192,6 @@ export const getUserById = async (req, res) => {
     });
   }
 };
-
-
 
 // update the user by ID
 export const updateUserById = async (req, res) => {
